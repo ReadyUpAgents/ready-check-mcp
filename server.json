@@ -1,0 +1,33 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.ReadyUpAgents/ready-check",
+  "title": "Ready Check",
+  "description": "Prepaid email inspection for agents: structured findings on one inbound email. $0.0025/check.",
+  "websiteUrl": "https://readyupagents.com/ready-check/",
+  "repository": {
+    "url": "https://github.com/ReadyUpAgents/ready-check-mcp",
+    "source": "github"
+  },
+  "version": "0.1.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "ready-check-mcp",
+      "version": "0.1.0",
+      "runtimeHint": "npx",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "READY_CHECK_KEY",
+          "description": "Prepaid Ready Check key (rc_ + 43 URL-safe base64 characters). Needed for checks and balance; optional before your first pack. Keep it secret.",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "manifest_version": "0.3",
+  "name": "ready-check",
+  "display_name": "Ready Check",
+  "version": "0.1.0",
+  "description": "Prepaid email inspection for agents: structured findings on one inbound email.",
+  "long_description": "Ready Check by ReadyUpAgents inspects one inbound email's text and returns structured findings (kind, verdict, scores, named checks). It does not write a reply, connect to an inbox, or send mail. A standard check costs $0.0025; credit comes in $1 and $5 packs paid by card on Stripe Checkout.",
+  "author": {
+    "name": "ReadyUpAgents",
+    "url": "https://readyupagents.com/"
+  },
+  "homepage": "https://readyupagents.com/ready-check/",
+  "documentation": "https://readyupagents.com/articles/ready-check-for-agents/",
+  "support": "https://readyupagents.com/contact/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ReadyUpAgents/ready-check-mcp"
+  },
+  "license": "MIT",
+  "keywords": ["email", "triage", "scam", "lead", "agents"],
+  "privacy_policies": ["https://readyupagents.com/privacy/"],
+  "server": {
+    "type": "node",
+    "entry_point": "dist/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/dist/index.js"],
+      "env": {
+        "READY_CHECK_KEY": "${user_config.ready_check_key}"
+      }
+    }
+  },
+  "user_config": {
+    "ready_check_key": {
+      "type": "string",
+      "title": "Prepaid key",
+      "description": "Your prepaid Ready Check key (rc_ + 43 URL-safe base64 characters). Leave empty until you buy your first pack.",
+      "sensitive": true,
+      "required": false
+    }
+  },
+  "tools": [],
+  "tools_generated": true,
+  "compatibility": {
+    "runtimes": {
+      "node": ">=20.0.0"
+    }
+  }
+}

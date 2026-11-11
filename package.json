@@ -1,0 +1,63 @@
+{
+  "name": "ready-check-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for ReadyUpAgents Ready Check: inspect one inbound email and return structured findings.",
+  "mcpName": "io.github.ReadyUpAgents/ready-check",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "ready-check-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist/index.js",
+    "dist/index.d.ts",
+    "dist/server.js",
+    "dist/server.d.ts",
+    "dist/api.js",
+    "dist/api.d.ts",
+    "dist/validate.js",
+    "dist/validate.d.ts",
+    "dist/key.js",
+    "dist/key.d.ts",
+    "dist/constants.js",
+    "dist/constants.d.ts",
+    "README.md",
+    "LICENSE",
+    "npm-shrinkwrap.json"
+  ],
+  "scripts": {
+    "build": "tsc && chmod +x dist/index.js",
+    "start": "node dist/index.js",
+    "test": "npm run build && node --test dist/key.test.js dist/validate.test.js dist/server.test.js",
+    "smoke": "npm run build && node scripts/smoke.mjs",
+    "prepublishOnly": "npm test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "ready-check",
+    "readyupagents",
+    "email"
+  ],
+  "author": "ReadyUpAgents",
+  "license": "MIT",
+  "homepage": "https://readyupagents.com/ready-check/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ReadyUpAgents/ready-check-mcp.git"
+  },
+  "bugs": {
+    "url": "https://readyupagents.com/contact/"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.2",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.0",
+    "typescript": "^5.9.0"
+  }
+}
