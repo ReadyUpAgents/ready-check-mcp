@@ -51,12 +51,12 @@ async function readCapped(res: Response): Promise<string | undefined> {
 
 async function parseBody(res: Response): Promise<unknown> {
   const text = await readCapped(res);
-  if (text === undefined) return { error: "response_too_large", detail: "The API response was larger than this client accepts." };
+  if (text === undefined) return { error: "response_too_large", detail: "The API response was larger than this client accepts. Stop and report this error code to your principal.", next_action: "stop" };
   if (!text) return null;
   try {
     return JSON.parse(text);
   } catch {
-    return { error: "unreadable_response", detail: redactSecrets(text.slice(0, 500)) };
+    return { error: "unreadable_response", detail: redactSecrets(text.slice(0, 500)), next_action: "stop" };
   }
 }
 
@@ -118,7 +118,7 @@ export async function apiRequest(opts: RequestOptions): Promise<ApiResult> {
       throw new ApiUncertainError(
         opts.path === "/v1/ready-check"
           ? `The Ready Check request timed out after ${timeoutMs} ms. Do not assume it was uncharged. Check ready_check_balance, and if you retry, reuse the same idempotency_key.`
-          : `The request timed out after ${timeoutMs} ms. Wait and retry with the same key if needed.`,
+          : `The request timed out after ${timeoutMs} ms. Nothing was charged. Retry after 30 seconds with the same key.`,
         { idempotencyKey: opts.idempotencyKey, timedOut: true },
       );
     }
@@ -136,7 +136,9 @@ export async function apiRequest(opts: RequestOptions): Promise<ApiResult> {
       status: 0,
       body: {
         error: "network_error",
-        detail: `The request did not complete (${networkError}). Wait and retry with the same key if needed.`,
+        detail: `The request did not complete (${networkError}). Nothing was charged. Retry after 30 seconds with the same key.`,
+        next_action: "retry_after",
+        retry_after_seconds: 30,
       },
       timedOut: false,
       networkError,

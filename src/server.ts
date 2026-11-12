@@ -87,6 +87,7 @@ function fromInputError(err: InputError) {
   return toolError({
     error: err.code,
     detail: err.message,
+    next_action: "fix_request",
     credit_charged: 0,
     charged_checks: 0,
     charged_usd: 0,
@@ -123,7 +124,8 @@ function fromUncertain(err: ApiUncertainError) {
   const payload: Record<string, unknown> = {
     error: err.timedOut ? "request_timed_out" : "request_uncertain",
     detail: err.message,
-    nothing_sent: true,
+    next_action: "retry_same_request",
+    retry_after_seconds: 30,
   };
   if (err.idempotencyKey) {
     payload.idempotency_key = err.idempotencyKey;
@@ -348,6 +350,8 @@ export function createServer(): McpServer {
             return toolError({
               error: err.timedOut ? "request_timed_out" : "request_uncertain",
               detail: `${err.message} No checkout URL was returned and nothing was charged. Retry ready_check_buy_credit with the same key.`,
+              next_action: "retry_same_request",
+              retry_after_seconds: 30,
               nothing_charged: true,
               ...keyExtras,
             });
@@ -366,7 +370,8 @@ export function createServer(): McpServer {
             http_status: result.status,
             error: "unexpected_checkout_url",
             detail:
-              "The API response did not contain an https checkout.stripe.com URL, so no link is returned. Do not pay anywhere else. Retry later with the same key.",
+              "The API response did not contain an https checkout.stripe.com URL, so no link is returned. Do not pay anywhere else. Stop and report this error code to your principal.",
+            next_action: "stop",
             nothing_charged: true,
             ...keyExtras,
           });
