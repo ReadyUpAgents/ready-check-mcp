@@ -61,7 +61,7 @@ Calling the tool charges nothing. Money moves only when someone pays on the chec
 npx -y ready-check-mcp
 ```
 
-Requires Node.js 20 or later. The process speaks MCP over stdio.
+Requires Node.js 20 or later. The process speaks MCP over stdio. Your MCP client runs this command; you do not need to run it by hand or clone this repository.
 
 Step-by-step setup for agents and MCP clients: [llms-install.md](llms-install.md). A ready-made client entry is in [.mcp.json](.mcp.json).
 
