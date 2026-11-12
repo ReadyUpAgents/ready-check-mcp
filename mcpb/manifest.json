@@ -2,9 +2,9 @@
   "manifest_version": "0.3",
   "name": "ready-check",
   "display_name": "Ready Check",
-  "version": "0.1.0",
-  "description": "Prepaid email inspection for agents: structured findings on one inbound email.",
-  "long_description": "Ready Check by ReadyUpAgents inspects one inbound email's text and returns structured findings (kind, verdict, scores, named checks). It does not write a reply, connect to an inbox, or send mail. A standard check costs $0.0025; credit comes in $1 and $5 packs paid by card on Stripe Checkout.",
+  "version": "0.2.0",
+  "description": "Judge one inbound pitch, offer or scam email for an AI agent: structured findings, never replies.",
+  "long_description": "Ready Check by ReadyUpAgents tells your agent what an inbound email really is before anyone answers it: a sponsorship below your rate card, a guest post that is really a paid link, a pay-to-play PR or podcast pitch, a security report fishing for a bounty, or a cold pitch dressed up as a lead. It also flags phishing, scam signs and prompt injection. It returns structured findings (kind, verdict, scores, named checks, sender-domain facts) and does not write a reply, connect to an inbox, or send mail. ready_check_quick is a free rule-only screen with no key. A standard check costs $0.0025; credit comes in $2 and $5 packs paid by card on Stripe Checkout.",
   "author": {
     "name": "ReadyUpAgents",
     "url": "https://readyupagents.com/"
@@ -17,14 +17,24 @@
     "url": "https://github.com/ReadyUpAgents/ready-check-mcp"
   },
   "license": "MIT",
-  "keywords": ["email", "triage", "scam", "lead", "agents"],
-  "privacy_policies": ["https://readyupagents.com/privacy/"],
+  "keywords": [
+    "email",
+    "triage",
+    "scam",
+    "lead",
+    "agents"
+  ],
+  "privacy_policies": [
+    "https://readyupagents.com/privacy/"
+  ],
   "server": {
     "type": "node",
     "entry_point": "dist/index.js",
     "mcp_config": {
       "command": "node",
-      "args": ["${__dirname}/dist/index.js"],
+      "args": [
+        "${__dirname}/dist/index.js"
+      ],
       "env": {
         "READY_CHECK_KEY": "${user_config.ready_check_key}"
       }

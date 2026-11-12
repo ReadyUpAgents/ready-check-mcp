@@ -42,7 +42,7 @@ describe("ready_check_buy_credit", () => {
   it("refuses without approval and makes no request", async () => {
     const calls = mockFetch(() => json(500, {}));
     const client = await connect();
-    const r: any = await client.callTool({ name: "ready_check_buy_credit", arguments: { pack_dollars: 1, principal_approved: false } });
+    const r: any = await client.callTool({ name: "ready_check_buy_credit", arguments: { pack_dollars: 2, principal_approved: false } });
     assert.equal(r.isError, true);
     assert.match(text(r), /principal_approval_required/);
     assert.equal(calls.length, 0);
@@ -50,10 +50,10 @@ describe("ready_check_buy_credit", () => {
 
   it("returns a valid Stripe URL and the generated key once; request goes only to the API host with no redirects", async () => {
     const calls = mockFetch(() =>
-      json(201, { checkout_url: "https://checkout.stripe.com/c/pay/cs_test_x", pack_dollars: 1, expires_at: "2026-11-11T00:00:00Z", extra_field: "ignored" }),
+      json(201, { checkout_url: "https://checkout.stripe.com/c/pay/cs_test_x", pack_dollars: 2, expires_at: "2026-11-11T00:00:00Z", extra_field: "ignored" }),
     );
     const client = await connect();
-    const r: any = await client.callTool({ name: "ready_check_buy_credit", arguments: { pack_dollars: 1, principal_approved: true } });
+    const r: any = await client.callTool({ name: "ready_check_buy_credit", arguments: { pack_dollars: 2, principal_approved: true } });
     const t = text(r);
     assert.notEqual(r.isError, true, t);
     const out = JSON.parse(t);
@@ -79,9 +79,9 @@ describe("ready_check_buy_credit", () => {
   });
 
   it("drops a non-Stripe checkout URL", async () => {
-    mockFetch(() => json(201, { checkout_url: "https://checkout.stripe.com.evil.example/pay", pack_dollars: 1, expires_at: "x" }));
+    mockFetch(() => json(201, { checkout_url: "https://checkout.stripe.com.evil.example/pay", pack_dollars: 2, expires_at: "x" }));
     const client = await connect();
-    const r: any = await client.callTool({ name: "ready_check_buy_credit", arguments: { pack_dollars: 1, principal_approved: true } });
+    const r: any = await client.callTool({ name: "ready_check_buy_credit", arguments: { pack_dollars: 2, principal_approved: true } });
     const t = text(r);
     assert.equal(r.isError, true);
     assert.match(t, /unexpected_checkout_url/);
@@ -96,7 +96,7 @@ describe("ready_check_buy_credit", () => {
       throw e;
     });
     const client = await connect();
-    const r: any = await client.callTool({ name: "ready_check_buy_credit", arguments: { pack_dollars: 1, principal_approved: true } });
+    const r: any = await client.callTool({ name: "ready_check_buy_credit", arguments: { pack_dollars: 2, principal_approved: true } });
     const out = JSON.parse(text(r));
     assert.equal(r.isError, true);
     assert.equal(out.error, "request_timed_out");
@@ -142,5 +142,52 @@ describe("ready_check", () => {
     const client = await connect();
     const r: any = await client.callTool({ name: "ready_check_balance", arguments: {} });
     assert.match(text(r), /response_too_large/);
+  });
+});
+
+describe("ready_check_quick", () => {
+  it("calls only /v1/quick-check and never sends the prepaid key", async () => {
+    process.env.READY_CHECK_KEY = generatePrepaidKey();
+    const calls = mockFetch(() => json(200, { mode: "quick", rules_only: true, checks_fired: ["urgency"], flags_found: true, credit_charged: 0 }));
+    const client = await connect();
+    const r: any = await client.callTool({ name: "ready_check_quick", arguments: { body: "Act within 24 hours", subject: "x" } });
+    assert.notEqual(r.isError, true, text(r));
+    assert.equal(calls.length, 1);
+    assert.equal(calls[0].url, "https://api.readyupagents.com/v1/quick-check");
+    assert.equal(calls[0].init.redirect, "error");
+    const headers = calls[0].init.headers as Record<string, string>;
+    assert.equal(headers.Authorization, undefined);
+    assert.equal(headers["Idempotency-Key"], undefined);
+    assert.equal(String(calls[0].init.body).includes(process.env.READY_CHECK_KEY!), false);
+    const out = JSON.parse(text(r));
+    assert.match(out.content_notice, /untrusted/);
+    assert.deepEqual(out.response.checks_fired, ["urgency"]);
+  });
+
+  it("passes 429 with retry_after_seconds as an error", async () => {
+    mockFetch(() => new Response(JSON.stringify({ error: "quick_check_allowance_used" }), { status: 429, headers: { "Content-Type": "application/json", "Retry-After": "3600" } }));
+    const client = await connect();
+    const r: any = await client.callTool({ name: "ready_check_quick", arguments: { body: "hello" } });
+    assert.equal(r.isError, true);
+    const out = JSON.parse(text(r));
+    assert.equal(out.http_status, 429);
+    assert.equal(out.retry_after_seconds, 3600);
+  });
+
+  it("rejects oversized input locally without a request", async () => {
+    const calls = mockFetch(() => json(200, {}));
+    const client = await connect();
+    const r: any = await client.callTool({ name: "ready_check_quick", arguments: { body: "x", context: { classification_notes: "y".repeat(1200) } } });
+    assert.equal(r.isError, true);
+    assert.equal(calls.length, 0);
+  });
+
+  it("lists the quick tool as read-only", async () => {
+    const client = await connect();
+    const { tools } = await client.listTools();
+    const t = tools.find((x: any) => x.name === "ready_check_quick");
+    assert.ok(t);
+    assert.equal(t!.annotations?.readOnlyHint, true);
+    assert.equal("key" in (t!.inputSchema.properties ?? {}), false);
   });
 });

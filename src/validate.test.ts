@@ -72,8 +72,9 @@ describe("validateCheckInput", () => {
 });
 
 describe("validatePackDollars and principal approval", () => {
-  it("accepts only 1 or 5", () => {
-    assert.equal(validatePackDollars(1), 1);
+  it("accepts only 2 or 5 ($1 retired)", () => {
+    assert.equal(validatePackDollars(2), 2);
+    assert.throws(() => validatePackDollars(1), (err: unknown) => err instanceof InputError && err.code === "invalid_pack");
     assert.equal(validatePackDollars(5), 5);
     assert.throws(() => validatePackDollars(10), (err: unknown) => err instanceof InputError && err.code === "invalid_pack");
   });

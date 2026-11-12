@@ -150,7 +150,7 @@ await runCase("ready_check_buy_credit without principal approval does not start 
   return await withClient(async (client) => {
     const result = await client.callTool({
       name: "ready_check_buy_credit",
-      arguments: { pack_dollars: 1, principal_approved: false },
+      arguments: { pack_dollars: 2, principal_approved: false },
     });
     const text = extractText(result);
     assert(result.isError, `Expected isError, got: ${text}`);

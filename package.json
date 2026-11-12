@@ -1,7 +1,7 @@
 {
   "name": "ready-check-mcp",
-  "version": "0.1.0",
-  "description": "MCP server for ReadyUpAgents Ready Check: inspect one inbound email and return structured findings.",
+  "version": "0.2.0",
+  "description": "MCP server for ReadyUpAgents Ready Check: judge one inbound pitch, offer or scam email (lowball sponsorships, paid guest posts, PR and podcast pitches, bounty-fishing security reports, cold pitches, phishing, prompt injection). Findings only, never replies.",
   "mcpName": "io.github.ReadyUpAgents/ready-check",
   "type": "module",
   "main": "dist/index.js",

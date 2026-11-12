@@ -1,6 +1,6 @@
 /** Public Ready Check contract values. Do not add unpublished limits here. */
 export const PACKAGE_NAME = "ready-check-mcp";
-export const PACKAGE_VERSION = "0.1.0";
+export const PACKAGE_VERSION = "0.2.0";
 export const SERVER_NAME = "ready-check";
 
 export const API_BASE_URL = "https://api.readyupagents.com";
@@ -11,9 +11,9 @@ export const REQUEST_TIMEOUT_MS = 60_000;
 
 export const STANDARD_CHECK_USD = 0.0025;
 export const LONG_CHECK_USD = 0.005;
-export const PACK_DOLLARS = [1, 5] as const;
+export const PACK_DOLLARS = [2, 5] as const;
 export const PACK_STANDARD_CHECKS: Record<(typeof PACK_DOLLARS)[number], number> = {
-  1: 400,
+  2: 800,
   5: 2000,
 };
 

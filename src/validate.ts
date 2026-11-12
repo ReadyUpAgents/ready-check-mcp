@@ -273,8 +273,8 @@ export function validateCheckInput(input: {
 
 export function validatePackDollars(value: unknown): PackDollars {
   const n = typeof value === "string" && value.trim() !== "" ? Number(value) : value;
-  if (n === 1 || n === 5) return n;
-  throw new InputError("invalid_pack", "pack_dollars must be exactly 1 or 5 (USD). $1 is 400 standard checks; $5 is 2,000.");
+  if (n === 2 || n === 5) return n;
+  throw new InputError("invalid_pack", "pack_dollars must be exactly 2 or 5 (USD). $2 is 800 standard checks; $5 is 2,000. The $1 pack is no longer offered.");
 }
 
 export function validatePrincipalApproved(value: unknown): void {
