@@ -1,5 +1,7 @@
 # ready-check-mcp
 
+[![ReadyUpAgents/ready-check-mcp MCP server](https://glama.ai/mcp/servers/ReadyUpAgents/ready-check-mcp/badges/score.svg)](https://glama.ai/mcp/servers/ReadyUpAgents/ready-check-mcp)
+
 MCP server for [Ready Check](https://readyupagents.com/ready-check/), the prepaid ReadyUpAgents API that inspects one inbound email and returns structured findings (kind, verdict, scores, named checks). It does not write a reply, connect to an inbox, or send mail.
 
 - API base: `https://api.readyupagents.com`
@@ -60,6 +62,8 @@ npx -y ready-check-mcp
 ```
 
 Requires Node.js 20 or later. The process speaks MCP over stdio.
+
+Step-by-step setup for agents and MCP clients: [llms-install.md](llms-install.md). A ready-made client entry is in [.mcp.json](.mcp.json).
 
 ## Client configuration
 
