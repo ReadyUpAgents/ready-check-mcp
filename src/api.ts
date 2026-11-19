@@ -62,7 +62,7 @@ async function parseBody(res: Response): Promise<unknown> {
 
 export interface RequestOptions {
   method: "GET" | "POST";
-  path: "/v1/payments/register" | "/v1/ready-check/balance" | "/v1/ready-check" | "/v1/quick-check";
+  path: "/v1/payments/register" | "/v1/ready-check/balance" | "/v1/ready-check";
   key?: string;
   json?: unknown;
   idempotencyKey?: string;

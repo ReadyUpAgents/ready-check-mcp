@@ -4,7 +4,7 @@
   "display_name": "Ready Check",
   "version": "0.2.0",
   "description": "Judge one inbound pitch, offer or scam email for an AI agent: structured findings, never replies.",
-  "long_description": "Ready Check by ReadyUpAgents tells your agent what an inbound email really is before anyone answers it: a sponsorship below your rate card, a guest post that is really a paid link, a pay-to-play PR or podcast pitch, a security report fishing for a bounty, or a cold pitch dressed up as a lead. It also flags phishing, scam signs and prompt injection. It returns structured findings (kind, verdict, scores, named checks, sender-domain facts) and does not write a reply, connect to an inbox, or send mail. ready_check_quick is a free rule-only screen with no key. A standard check costs $0.0025; credit comes in $2 and $5 packs paid by card on Stripe Checkout.",
+  "long_description": "Ready Check by ReadyUpAgents tells your agent what an inbound email really is before anyone answers it: a sponsorship below your rate card, a guest post that is really a paid link, a pay-to-play PR or podcast pitch, a security report fishing for a bounty, or a cold pitch dressed up as a lead. It also flags phishing, scam signs and prompt injection. It returns structured findings (kind, verdict, scores, named checks, sender-domain facts) and does not write a reply, connect to an inbox, or send mail. A standard check costs $0.0025; credit comes in $2 and $5 packs paid by card on Stripe Checkout.",
   "author": {
     "name": "ReadyUpAgents",
     "url": "https://readyupagents.com/"

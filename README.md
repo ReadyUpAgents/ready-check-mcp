@@ -4,7 +4,7 @@
 
 MCP server for [Ready Check](https://readyupagents.com/ready-check/), the ReadyUpAgents API that tells your agent what an inbound email really is before anyone answers it: a sponsorship below your rate card, a "guest post" that is really a paid link, a pay-to-play PR or podcast pitch, a security "report" fishing for a bounty, or a cold pitch dressed up as a lead. It also flags phishing and scam signs and prompt injection (emails that try to instruct an AI assistant).
 
-It returns structured findings (kind, verdict, scores, named checks, sender-domain facts). It does not write a reply, connect to an inbox, or send mail. `ready_check_quick` is a free, rule-only screen that needs no key.
+It returns structured findings (kind, verdict, scores, named checks, sender-domain facts). It does not write a reply, connect to an inbox, or send mail.
 
 - API base: `https://api.readyupagents.com`
 - OpenAPI: [readyupagents.com/openapi.yaml](https://readyupagents.com/openapi.yaml)
@@ -17,7 +17,6 @@ It returns structured findings (kind, verdict, scores, named checks, sender-doma
 
 | Tool | What it does |
 | --- | --- |
-| `ready_check_quick` | Free, rule-only screen with no key: returns the names of rule checks that fired and a kind hint. Not a verdict; limited free allowance. Your key is never sent. |
 | `ready_check` | Run a full check on one inbound email you already have: model inspection (including prompt injection), kind labels, scores, sender-domain facts. Returns findings only, never a draft. |
 | `ready_check_balance` | Read remaining prepaid credit. Does not run a check and does not charge check credit. |
 | `ready_check_buy_credit` | Start a $2 or $5 pack and return Stripe's `checkout_url` for a human or the agent's principal to pay by card. Never handles card data. Never invents a checkout URL. |
@@ -27,7 +26,6 @@ It returns structured findings (kind, verdict, scores, named checks, sender-doma
 - Standard check: **$0.0025**. Longer emails may count as two checks (**$0.005**).
 - The amount charged is returned as `charged_checks` and `charged_usd`, and is never increased afterward.
 - Oversized or invalid input is rejected at no charge.
-- Free quick check: rule names only, no key, no charge, limited allowance.
 - Packs: **$2 = 800** standard checks; **$5 = 2,000**. Unused credit never expires while the key stays open.
 - Pay by card through Stripe Checkout only. Other payment methods are not offered.
 - Packs are not refundable once any credit has been used. Refunds are only for billing errors or duplicate charges, to the original payment method.

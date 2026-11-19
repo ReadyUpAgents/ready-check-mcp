@@ -2,7 +2,7 @@
 
 These steps set up the Ready Check MCP server in an MCP client such as Cline, Cursor, or Claude Desktop.
 
-Ready Check judges one inbound email for an agent: sponsorships below a rate card, paid guest posts, pay-to-play PR and podcast pitches, bounty-fishing security reports, cold pitches, phishing and scam signs, and prompt injection. It returns structured findings (kind, verdict, scores, named checks, sender-domain facts). It does not write a reply, connect to an inbox, or send mail. `ready_check_quick` is free and needs no key. Full checks are prepaid: $0.0025 per standard check, sold in $2 (800 checks) and $5 (2,000 checks) packs.
+Ready Check judges one inbound email for an agent: sponsorships below a rate card, paid guest posts, pay-to-play PR and podcast pitches, bounty-fishing security reports, cold pitches, phishing and scam signs, and prompt injection. It returns structured findings (kind, verdict, scores, named checks, sender-domain facts). It does not write a reply, connect to an inbox, or send mail. Full checks are prepaid: $0.0025 per standard check, sold in $2 (800 checks) and $5 (2,000 checks) packs.
 
 ## Requirements
 
@@ -38,7 +38,7 @@ On Windows, if `npx` is not found, use `"command": "cmd"` and `"args": ["/c", "n
 
 The server starts and lists its tools without a key.
 
-Setup is done when the `ready-check` entry is in the client's MCP settings file and the client lists the four tools in step 3. No key is needed for this.
+Setup is done when the `ready-check` entry is in the client's MCP settings file and the client lists the three tools in step 3. No key is needed for this.
 
 ## 2. Add a prepaid key
 
@@ -86,16 +86,15 @@ Once a key is set, the agent may use `ready_check`, and `ready_check_buy_credit`
 
 ## 3. Check that it works
 
-After the client reloads its MCP servers, four tools should be listed:
+After the client reloads its MCP servers, three tools should be listed:
 
 | Tool | What it does | Cost |
 | --- | --- | --- |
-| `ready_check_quick` | Free rule-only screen; returns fired rule names, not a verdict. Needs no key. | Free (limited allowance) |
 | `ready_check` | Inspects one inbound email and returns findings only. | Uses prepaid credit |
 | `ready_check_balance` | Reads remaining credit for the configured key. | Free |
 | `ready_check_buy_credit` | Starts a $2 or $5 pack and returns a Stripe Checkout URL for a person to pay. | Free to call; money moves only if someone pays |
 
-`ready_check_quick` is a safe first call with no key. `ready_check_balance` is a safe first call once a key is set. A new key shows no credit until a pack is paid.
+`ready_check_balance` is a safe first call once a key is set. A new key shows no credit until a pack is paid.
 
 ## Notes
 
